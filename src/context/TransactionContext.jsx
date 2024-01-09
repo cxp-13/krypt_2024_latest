@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { ethers } from "ethers";
 import { contractABI, contractAddress } from "../utils/constants";
 import BN from "bn.js";
+import { blockTimestampToViewFormatter } from "../utils/timeFormat";
 
 export const TransactionContext = React.createContext();
 
@@ -27,10 +28,13 @@ export const TransactionProvider = ({ children }) => {
     const [formData, setFormData] = useState({ addressTo: '', amount: '', keyword: '', message: '' })
     const [isLoading, setIsLoading] = useState(false)
     const [transactionCount, setTransactionCount] = useState(0)
+    const [allTransactions, setAllTransactions] = useState([])
+
 
 
     useEffect(() => {
         checkIfWalletIsConnected()
+        fetchAllTransactions()
     }, [])
 
     const handleChange = (e, name) => {
@@ -68,6 +72,30 @@ export const TransactionProvider = ({ children }) => {
         }
     }
 
+    const fetchAllTransactions = async () => {
+        try {
+            const transactionContract = await getEthereumContract()
+            const allTransactions = await transactionContract.getAllTransactions()
+            console.log("allTransactions", allTransactions);
+
+            const structuredTransactions = allTransactions.map((transaction) => ({
+                addressTo: transaction.receiver,
+                addressFrom: transaction.sender,
+                timestamp: blockTimestampToViewFormatter(transaction.timestamp),
+                message: transaction.message,
+                keyword: transaction.keyword,
+                amount: ethers.formatEther(transaction.amount),
+            }));
+
+
+            console.log("structuredTransactions", structuredTransactions);
+
+            setAllTransactions(structuredTransactions);
+        } catch (error) {
+            console.log(error);
+        }
+    }
+
     const sendTransaction = async () => {
         const transactionContract = await getEthereumContract()
 
@@ -101,8 +129,10 @@ export const TransactionProvider = ({ children }) => {
         await transactionHash.wait()
         setIsLoading(false)
     }
+
+
     return (
-        <TransactionContext.Provider value={{ connectWallet, currentAccount, formData, setFormData, handleChange, sendTransaction, isLoading, transactionCount }}>
+        <TransactionContext.Provider value={{ connectWallet, currentAccount, formData, setFormData, handleChange, sendTransaction, isLoading, transactionCount, allTransactions }}>
             {children}
         </TransactionContext.Provider>
     )
