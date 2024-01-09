@@ -7,6 +7,7 @@ This project focuses on fixing the following issues:
 2. Upgraded ethers to version 6.
 3. Replaced the deprecated method of handling the amount of ETH currency sent in `eth_sendTransaction` with BN.js instead of `parsedAmount._hex`.
 4. Some configurations in the `tailwind.config.js` file and certain properties in Tailwind itself have been deprecated.
+5. Solve the problem of obtaining all transaction data conversion
 
 # React + Vite
 
