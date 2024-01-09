@@ -4,7 +4,7 @@ import dummyData from '../utils/dummyData'
 import { shortenAddress } from '../utils/shortenAddress'
 import useFetch from '../hooks/useFetch'
 
-const TransactionCard = ({ addressTo, addressFrom, timestamp, message, keyword, amount, url }) => {
+const TransactionCard = ({ addressTo, addressFrom, timestamp, message, keyword, amount }) => {
 
   const giftUrl = useFetch({ keyword })
   console.log(keyword, giftUrl);
@@ -31,7 +31,7 @@ const TransactionCard = ({ addressTo, addressFrom, timestamp, message, keyword, 
             </>
           )}
         </div>
-        <img src={giftUrl || url} alt="gif" className='w-full h-64 2xl:h-96 rounded-md shadow-lg object-cover' />
+        <img src={giftUrl} alt="gif" className='w-full h-64 2xl:h-96 rounded-md shadow-lg object-cover' />
         <div className='bg-black p-3 px-5 w-max rounded-full -mt-5 shadow-2xl'>
           <p className='text-[#37c7da] font-bold'>{timestamp}</p>
         </div>

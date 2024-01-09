@@ -30,12 +30,22 @@ export const TransactionProvider = ({ children }) => {
     const [transactionCount, setTransactionCount] = useState(0)
     const [allTransactions, setAllTransactions] = useState([])
 
-
+    ethereum.on('accountsChanged', (accounts) => {
+        console.log(accounts);
+        setCurrentAccount(accounts[0])
+    });
 
     useEffect(() => {
-        checkIfWalletIsConnected()
-        fetchAllTransactions()
+        if (!ethereum.isMetaMask) {
+            alert("Please install metamask")
+        }
     }, [])
+
+    useEffect(() => {
+        if (currentAccount[0]) {
+            fetchAllTransactions()
+        }
+    }, [currentAccount])
 
     const handleChange = (e, name) => {
         setFormData((prevState) => ({
@@ -43,13 +53,11 @@ export const TransactionProvider = ({ children }) => {
             [name]: e.target.value
         }))
     }
-
+    // 暂时放弃
     const checkIfWalletIsConnected = async () => {
         try {
             if (!ethereum) return alert("Please install metamask")
-
             const accounts = await ethereum.request({ method: 'eth_accounts' })
-
             if (accounts.length) {
                 const account = accounts[0]
                 console.log("Found an authorized account:", account)
@@ -63,7 +71,6 @@ export const TransactionProvider = ({ children }) => {
 
     const connectWallet = async () => {
         try {
-            if (!ethereum) return alert("Please install metamask")
             const accounts = await ethereum.request({ method: 'eth_requestAccounts' })
             setCurrentAccount(accounts[0])
             console.log("Connected", accounts[0])
@@ -86,10 +93,7 @@ export const TransactionProvider = ({ children }) => {
                 keyword: transaction.keyword,
                 amount: ethers.formatEther(transaction.amount),
             }));
-
-
             console.log("structuredTransactions", structuredTransactions);
-
             setAllTransactions(structuredTransactions);
         } catch (error) {
             console.log(error);
@@ -107,8 +111,6 @@ export const TransactionProvider = ({ children }) => {
         console.log(parsedAmount);
         // It has been abandoned, use BN.js
         console.log(parsedAmount._hex);
-
-
         ethereum.request({
             method: 'eth_sendTransaction',
             params: [{
