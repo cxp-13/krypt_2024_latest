@@ -1,6 +1,6 @@
-Original project video tutorial address:
-https://www.youtube.com/watch?v=Wn_Kb3MR_cU
-Smart Contract Code Repo:https://github.com/cxp-13/krypt_smart_contract 
+### Original project video tutorial address:https://www.youtube.com/watch?v=Wn_Kb3MR_cU
+
+### Smart Contract Code Repo:https://github.com/cxp-13/krypt_smart_contract 
 
 This project focuses on fixing the following issues:
 
