@@ -30,10 +30,10 @@ export const TransactionProvider = ({ children }) => {
     const [transactionCount, setTransactionCount] = useState(0)
     const [allTransactions, setAllTransactions] = useState([])
 
-    ethereum.on('accountsChanged', (accounts) => {
-        console.log(accounts);
-        setCurrentAccount(accounts[0])
-    });
+    // ethereum.on('accountsChanged', (accounts) => {
+    //     console.log(accounts);
+    //     setCurrentAccount(accounts[0])
+    // });
 
     useEffect(() => {
         if (!ethereum.isMetaMask) {
@@ -72,8 +72,8 @@ export const TransactionProvider = ({ children }) => {
     const connectWallet = async () => {
         try {
             const accounts = await ethereum.request({ method: 'eth_requestAccounts' })
+            console.log("connectWallet accounts", accounts);
             setCurrentAccount(accounts[0])
-            console.log("Connected", accounts[0])
         } catch (error) {
             console.log(error)
         }
