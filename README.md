@@ -1,4 +1,4 @@
-### Original project video tutorial address:https://www.youtube.com/watch?v=Wn_Kb3MR_cU
+### Original project :[https://www.youtube.com/watch?v=Wn_Kb3MR_cU](https://github.com/adrianhajdin/project_web3.0)
 
 ### Smart Contract Code Repo:https://github.com/cxp-13/krypt_smart_contract 
 
